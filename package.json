@@ -5,8 +5,8 @@
   "author": "Ryan Erdmann",
   "license": "MIT",
   "files": [
-    "build/azure-directory-browser.js",
-    "build/azure-directory-browser.js.LICENSE.txt"
+    "dist/azure-directory-browser.js",
+    "dist/azure-directory-browser.js.LICENSE.txt"
   ],
   "dependencies": {
     "@azure/storage-blob": "^12.7.0",

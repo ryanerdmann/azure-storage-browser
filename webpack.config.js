@@ -17,7 +17,7 @@ module.exports = {
   },
   output: {
     filename: 'azure-directory-browser.js',
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
     clean: true
   },

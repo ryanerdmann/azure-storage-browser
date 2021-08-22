@@ -28,7 +28,7 @@ To use the Azure Storage Browser, [enable Static Website hosting](https://docs.m
 </head>
 <body>
   <div id="root"></div>
-  <script crossorigin src="azure-directory-browser.js"></script>
+  <script crossorigin src="https://unpkg.com/azure-storage-browser/dist/azure-directory-browser.js"></script>
 </body>
 </html>
 ```
