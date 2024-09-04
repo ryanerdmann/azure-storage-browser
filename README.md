@@ -33,6 +33,27 @@ To use the Azure Storage Browser, [enable Static Website hosting](https://docs.m
 </html>
 ```
 
+## Azure Storage Static Website Requirements
+
+1. **Enable Static Website**  
+   - Go to your Azure Storage account.
+   - Under the `Static website` section, enable the static website feature.
+
+2. **Upload `index.html`**  
+   - Create an `index.html` file with the desired content.
+   - Upload the `index.html` file to the `$web` container in your storage account.
+
+3. **Configure Document Name**  
+   - Set `index.html` as the default document name in the Static Website configuration.
+
+4. **Define a CORS Rule**  
+   - Add a CORS (Cross-Origin Resource Sharing) rule with the following settings:
+     - **Allowed Origins:** Add URL of your origin. In this example case, it must be 'https://azdirbrowser.z5.web.core.windows.net'
+     - **Allowed Methods:** `GET`, `HEAD`, `OPTIONS`
+     - **Allowed Headers:** `*`
+     - **Exposed Headers:** `x-ms-*`
+     - **Max Age:** `200`
+
 ## Contributing
 
 This software is currently in preview.
