@@ -33,6 +33,52 @@ To use the Azure Storage Browser, [enable Static Website hosting](https://docs.m
 </html>
 ```
 
+### Hosting the browser outside the storage account (sub-folder)
+
+The browser can also be served from another web server, under a sub-folder,
+while listing a blob container. Configure it with `data-*` attributes on the
+root element:
+
+| Attribute            | Description                                                         | Default                                |
+|----------------------|---------------------------------------------------------------------|----------------------------------------|
+| `data-container-uri` | Container to list                                                   | `$web` container of the hosting account |
+| `data-web-uri`       | Base URI that file links point to                                   | The current page's origin              |
+| `data-base-path`     | URL path that maps to the container root (kept in the address bar)  | `/`                                    |
+
+Example: `https://example.com/static/` browses the root of the `media` container,
+and `https://example.com/static/images/` browses `media/images/`:
+
+```
+<div id="root"
+  data-base-path="/static/"
+  data-container-uri="https://myaccount.blob.core.windows.net/media"
+  data-web-uri="https://myaccount.blob.core.windows.net/media">
+</div>
+<script src="/static/azure-directory-browser.js"></script>
+```
+
+Reference the script with an absolute path (starting with `/`) or a full URL.
+A relative path would be resolved against the current sub-folder (e.g.
+`/static/images/azure-directory-browser.js`) and fail to load on deep links.
+
+Requirements:
+
+- The container's public access level must be **Container** (anonymous list access).
+- CORS on the storage account's Blob service must allow `GET` from your site's origin.
+- To support deep links and page refreshes on sub-folders, route every path under
+  the base path to the page. For Apache with `mod_rewrite`, put this in
+  `/static/.htaccess`:
+
+  ```
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^ index.html [L]
+  ```
+
+  Existing files (such as the script) are served as they are; every other path
+  is handled by the page. Alternatively, if your host allows it (`AllowOverride
+  Indexes`), a single `FallbackResource /static/index.html` line does the same.
+
 ## Contributing
 
 This software is currently in preview.

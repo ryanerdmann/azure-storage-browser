@@ -71,3 +71,39 @@ export const getDefaultContainerUri = (): string => {
 
   return window.location.protocol + '//' + accountName + BLOB + hostSuffix + '/$web';
 }
+
+// Ensures a base path has a leading and trailing slash. Example: 'static' -> '/static/'
+export const normalizeBasePath = (basePath: string | undefined): string => {
+  let p = (basePath ?? '/').trim();
+  if (!p.startsWith('/')) p = '/' + p;
+  if (!p.endsWith('/')) p = p + '/';
+  return p;
+};
+
+// Converts a browser location pathname (URL-encoded) into a directory path inside
+// the container, relative to basePath. Example: ('/static/foo%20bar/', '/static/') -> '/foo bar/'
+export const toContainerPath = (pathname: string, basePath: string): string => {
+  let p = pathname;
+  try { p = decodeURIComponent(pathname); } catch { /* keep raw */ }
+
+  const baseNoSlash = basePath.substring(0, basePath.length - 1);
+  if (p.startsWith(basePath)) {
+    p = p.substring(basePath.length);
+  } else if (p === baseNoSlash) {
+    p = '';
+  }
+
+  // Drop the hosting page's file name (index.html); treat any other last segment
+  // as a folder, so /static/a/b/c loads the same folder as /static/a/b/c/
+  p = p.replace(/(^|\/)index\.html?$/i, '$1');
+  if (p !== '' && !p.endsWith('/')) p += '/';
+
+  return '/' + p.replace(/^\/+/, '');
+};
+
+// Converts a container directory path into the URL pathname shown in the browser.
+// Example: ('/foo bar/', '/static/') -> '/static/foo%20bar/'
+export const toLocationPath = (path: string, basePath: string): string => {
+  const encoded = path.substring(1).split('/').map(encodeURIComponent).join('/');
+  return basePath + encoded;
+};
