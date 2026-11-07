@@ -6,6 +6,7 @@
     "target": "es5",
     "jsx": "react",
     "esModuleInterop": true,
-    "moduleResolution": "Node"
+    "moduleResolution": "Node",
+    "types": []
   }
 }
