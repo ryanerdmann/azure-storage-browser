@@ -16,14 +16,18 @@ export const DirectoryBrowser = ({ provider, initialPath }: DirectoryBrowserProp
 
   useEffect(() => {
     window.document.title = 'Index of ' + path;
-    window.history.pushState(null, '', path);
+    // Only push when the path actually changed: avoids a duplicate entry on initial
+    // load, and avoids pushing a new entry on Back/Forward (which breaks Forward).
+    if (document.location.pathname !== path) {
+      window.history.pushState(null, '', path);
+    }
   }, [path]);
 
   useEffect(() => {
     const listener = () => setPath(document.location.pathname);
     window.addEventListener('popstate', listener);
     return () => window.removeEventListener('popstate', listener);
-  }, [path]);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
